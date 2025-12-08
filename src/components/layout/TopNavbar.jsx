@@ -1,16 +1,17 @@
-import { Bell, LogOut } from "lucide-react";
+import { Bell, LogOut, Menu, CheckSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button.jsx";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.jsx";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover.jsx";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu.jsx";
 import { useTaskContext } from "@/context/TaskContext.jsx";
 import { useAuth } from "@/context/AuthContext.jsx";
 import { NotificationList } from "@/components/notifications/NotificationList.jsx";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge.jsx";
 import { ThemeToggle } from "@/components/ThemeToggle.jsx";
+import { toast } from "sonner";
 
-export function TopNavbar() {
+export function TopNavbar({ onMenuClick }) {
   const { currentUser, notifications } = useTaskContext();
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -19,14 +20,37 @@ export function TopNavbar() {
   const handleLogout = () => {
     logout();
     localStorage.removeItem("taskmanager_last_route");
+    toast.success("Signed out successfully", {
+      description: "You have been logged out. See you again!"
+    });
     navigate("/login");
+  };
+
+  const handleLogoClick = () => {
+    navigate("/");
   };
 
   return (
     <header className="h-16 bg-card border-b border-border flex items-center justify-between px-4 md:px-6">
-      {/* Left side - Title */}
-      <div className="flex items-center gap-4 ml-12 md:ml-0">
-        <h2 className="text-base md:text-lg font-semibold text-foreground">Task Manager</h2>
+      {/* Left side - Menu Button and Logo */}
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          onClick={onMenuClick}
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
+        <button 
+          onClick={handleLogoClick}
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
+        >
+          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+            <CheckSquare className="h-4 w-4 text-primary-foreground" />
+          </div>
+          <h2 className="text-base md:text-lg font-semibold text-foreground">TaskFlow</h2>
+        </button>
       </div>
 
       {/* Right side */}

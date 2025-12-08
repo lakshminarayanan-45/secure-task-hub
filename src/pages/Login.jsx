@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext.jsx";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "@/hooks/use-toast.js";
+import { Button } from "@/components/ui/button.jsx";
+import { Input } from "@/components/ui/input.jsx";
+import { Label } from "@/components/ui/label.jsx";
+import { Checkbox } from "@/components/ui/checkbox.jsx";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.jsx";
+import { toast } from "sonner";
 import { CheckSquare, User, Lock, Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
@@ -29,17 +29,14 @@ export default function Login() {
     setIsLoading(false);
 
     if (success) {
-      toast({
-        title: "Welcome back!",
+      toast.success(`Welcome back, ${username}!`, {
         description: "You have successfully logged in.",
       });
       const lastRoute = localStorage.getItem("taskmanager_last_route") || "/dashboard";
       navigate(lastRoute);
     } else {
-      toast({
-        title: "Login failed",
-        description: "Invalid username or password.",
-        variant: "destructive",
+      toast.error("Invalid credentials", {
+        description: "Please check your username and password.",
       });
     }
   };
@@ -59,7 +56,7 @@ export default function Login() {
           <div className="h-14 w-14 rounded-xl bg-primary flex items-center justify-center shadow-lg">
             <CheckSquare className="h-8 w-8 text-primary-foreground" />
           </div>
-          <h1 className="text-2xl font-bold">Task Manager</h1>
+          <h1 className="text-2xl font-bold">TaskFlow</h1>
           <p className="text-muted-foreground text-sm">Sign in to manage your tasks</p>
         </div>
 
